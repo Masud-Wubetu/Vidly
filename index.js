@@ -26,7 +26,19 @@ app.post('/api/genres', (req, res) => {
     }
     genres.push(genre);
     res.send(genre);
-})
+});
+
+app.put('/api/genres/:id', (req, res) => {
+    const genre = genres.find(g => g.id === parseInt(req.params.id));
+    if(!genre) return res.status(404).send('the Genre with the given id was not found');
+
+    const {error} = validateGenre(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    genre.name = req.body.name;
+    res.send(genre);
+
+});
 
 function validateGenre(genre){
    const schema = Joi.object({
