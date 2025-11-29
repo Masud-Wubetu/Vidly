@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const express = require('express');
 const app = express();
 
@@ -10,3 +11,14 @@ const genres = [
 app.get('/api/genres', (req, res) => {
     res.send(genres);
 });
+
+function validateCourse(genre){
+   const schema = Joi.object({
+        name: Joi.string().min(3).required()
+    });
+    
+    return schema.validate(genre);
+}
+
+const port = process.env.PORT || 3000
+app.listen(port, () => console.log(`Listening on port ${port} `));
