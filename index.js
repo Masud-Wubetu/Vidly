@@ -30,7 +30,7 @@ app.post('/api/genres', (req, res) => {
 
 app.put('/api/genres/:id', (req, res) => {
     const genre = genres.find(g => g.id === parseInt(req.params.id));
-    if(!genre) return res.status(404).send('the Genre with the given id was not found');
+    if(!genre) return res.status(404).send('The Genre with the given id was not found');
 
     const {error} = validateGenre(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -41,14 +41,20 @@ app.put('/api/genres/:id', (req, res) => {
 
 app.delete('/api/genres/:id', (req, res) => {
     const genre = genres.find(g => g.id === parseInt(req.params.id));
-    if(!genre) return res.status(404).send('the Genre with the given id was not found');
+    if(!genre) return res.status(404).send('The Genre with the given id was not found');
 
     const index = genres.indexOf(genre);
     genres.splice(index, 1);
 
     res.send(genre);
+});
 
-})
+app.get('/api/genres/:id', (req, res) => {
+    const genre = courses.find(c => c.id === parseInt(req.params.id));
+    if(!genre) return res.status(404).send('The Genre with the given id was not found!');
+    res.send(genre);
+});
+
 function validateGenre(genre){
    const schema = Joi.object({
         name: Joi.string().min(3).required()
